@@ -61,7 +61,20 @@ def divide_image(image, block_width, block_height, start_coordinates):
 
     cv2.imwrite('watermap.png', img[::block_height, ::block_width])
 
+    black_blocks = 0
+    green_blocks = 0
+    for i in range(0, rows, block_height):
+        for j in range(0, cols, block_width):
+            block = img[i:i + block_height, j:j + block_width]
+            if np.all(block == [0, 0, 0]):
+                black_blocks += 1
+            if np.all(block == [0, 255, 0]):
+                green_blocks += 1
+    print("Number of black blocks:", black_blocks)
+    print("Number of green blocks:", green_blocks)
+    print("Total number of blocks:", (black_blocks+green_blocks))
+
     return dist_transform
 
 
-dist_transform = divide_image('water.jpg', 20, 20, [(5, 5), (5, 50), (20, 50), (60, 84), (128, 75), (120, 5), (20, 5)])
+dist_transform = divide_image('water.png', 20, 20, [(5, 5), (5, 50), (20, 50), (60, 84), (128, 75), (120, 5), (20, 5)])
